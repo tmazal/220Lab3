@@ -28,13 +28,14 @@ using namespace std;
  * initiate random!
  */
 
+//left to do -- code playgame and finish up constructors
 int main(int argc, char** argv) {
     Game game;
     game.makeBoard();
     game.getPlayers();
     game.printBoard();
     game.printPlayers();
-    cout << game.checkFour(1,1);
+    game.getWinner();
     return 0;
 }
 

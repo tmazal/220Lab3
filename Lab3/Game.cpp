@@ -90,6 +90,7 @@ void Game::playGame() {
     for (int i = 0; i < loop; i++){
         
     }
+    
 //Note: for the extra credit version, the findMoves method returns a dynamically created array of 3 different moveLists. 
 // The first of the 3  contains the list of moves that would complete a square. The second of the 3 contains a list of 
 // neutral moves, and the third of the 3 contains the list of moves that place a third corner on a square (which are bad 
@@ -99,12 +100,54 @@ void Game::playGame() {
 // list of bad moves as a last resort.
 }//playGame
 
-bool findMoves(char v){
+bool Game::findMoves(char v){
 //    Regular version, this method continues to generate random x,y values until that cell on the
 //    board is empty, then places the player's character v on the board, and checks to see if a 
 //    square is completed using checkFour.  If so, true is returned and that player's score goes up by 1 in the
 //    playGame method, and that player gets to take another turn (so turn does not increase by 1).  
-
+    int playerIndex;
+    bool placed = false;
+    //finds index of player playing
+    for (int i = 0; i < numPlayers; i++){
+        if ((*players[i]).c == v){
+            playerIndex = i;
+        }
+    }
+    int xcoord = rand()%size;
+    int ycoord = rand()%size;
+    for (int i = 0; i < 100; i++){
+        if (board[xcoord][ycoord] == '.'){
+            board[xcoord][ycoord] = v;
+            placed = true;
+            if (checkFour(xcoord, ycoord) == 1){
+                (*players[playerIndex]).score++;
+                findMoves(v);
+            }
+            else{
+                break;
+            }
+        }
+    xcoord = rand()%size;
+    ycoord = rand()%size;
+    }
+    //100 tries to randomly generate values and place on an empty space
+    if (placed == false){   //if no empty spaces found we iterate through entire board sequentially
+        for (int i = 0; i < size; i++){
+            for (int j = 0; j < size; j++){
+                if (board[xcoord][ycoord] == '.'){
+                    board[xcoord][ycoord] = v;
+                    placed = true;
+                    if (checkFour(xcoord, ycoord) == 1){
+                        (*players[playerIndex]).score++;
+                        findMoves(v);
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+        }
+    }
 // movesList * Game::findMoves(char v) {
 // The extra credit version of this method - this method dynamically creates a list of 3 movesList objects.  It then goes
 // through the entire board and classifies each possible move left on the board as being either good (will complete a 
@@ -146,7 +189,19 @@ bool Game::checkFour(int x, int y) {
 }//checkFour
 
 void Game::getWinner() {
-
+    int highestScore = -1;
+    int indexOfWinner;
+    for(int i = 0; i < numPlayers; i++){
+	if((*players[i]).score > highestScore){
+            highestScore = (*players[i]).score;
+	}//if
+    }//for
+    for(int i = 0; i < numPlayers; i++){
+        if ((*players[i]).score == highestScore){
+            cout << "Winner: " << (*players[i]).name << "!" << endl;
+        }
+    }
+    //multiple players printed in the case of a tie
 // This method determines which of the players in the array of Players has the highest score, and prints out 
 // that player's name and their score.
 }//getWinner
