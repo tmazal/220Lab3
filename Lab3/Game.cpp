@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "movesList.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <time.h>
@@ -272,82 +273,36 @@ bool Game::findMoves(char v){
 }//findMoves
 */
 
-movesList *Game::findMoves(char v){
-//    Regular version, this method continues to generate random x,y values until that cell on the
-//    board is empty, then places the player's character v on the board, and checks to see if a 
-//    square is completed using checkFour.  If so, true is returned and that player's score goes up by 1 in the
-//    playGame method, and that player gets to take another turn (so turn does not increase by 1).  
-//    As mentioned, this function takes in a character and returns 1 if a square is complete at a random x,y value.
-    // movesList * Game::findMoves(char v) {
-// The extra credit version of this method - this method dynamically creates a list of 3 movesList objects.  It then goes
-// through the entire board and classifies each possible move left on the board as being either good (will complete a 
-// square, in which case it's added to the new list of movesLists at [0], neutral (doesn't do anything), in which it's
-// added to the second of the movesLists, or bad (3/4 of a square), in which case it's added to the third of the
-// movesLists.
-// This method uses checkFour() method to determine whether a move is good, checkThree to determine if a move is
-// bad, and if neither of those is true, then the move is considered neutral.
-// This method returns the list of three movesList objects.
+cell Game::findMoves(char v){
     int playerIndex;    //int that will hold the index of the player with character v
-    bool placed = false;    //boolean represents whether a char is placed
-    //finds index of player playing by character
+    int listsize = 0;   //initial size of list of cells
     for (int i = 0; i < numPlayers; i++){   //iterate through players
         if ((*players[i]).c == v){          //until we find who the character belongs to
             playerIndex = i;                //and set playerindex
         }
     }
-    int xcoord = rand()%size;               //random x,y coords generated from 0 to size exclusive
-    int ycoord = rand()%size;
-    for (int i = 0; i < 100; i++){          //for loop has 100 tries to find an unoccupied spot on the board
-        if (board[ycoord][xcoord] == '.'){  //if spot unoccupied
-            board[ycoord][xcoord] = v;      //we place character these
-            placed = true;
-            if (checkFour(ycoord, xcoord) == 1){    //and check if a square is completed
-                (*players[playerIndex]).score++;    //if so, score increases
-                printBoard();                       //board is printed
-                cout << "Score +1 for Player " << (*players[turn]).name << endl << endl;    //score +1 printed
-                printPlayers();                     //players printed
-                return true;    //true returned, square made
-            }
-            else{           //if a character is placed but the square is not completed
-                turn++;     //turn is incremented
-                if (turn == numPlayers){    //loop loops back to start of rotation if everyone has played their turn
-                    turn = 0;               //by setting turn to 0
-                }
-                printBoard();               //board is printed
-                return false;   //false returned, no square made
-            }
-        }
-    xcoord = rand()%size;   //x,y coordinates randomized again
-    ycoord = rand()%size;
-    }
-    //this point is reached if no x,y coordinates for unoccupied spaces are found within 100 attempts
-    if (placed == false){   //if no empty spaces found we iterate through entire board sequentially
-        for (int i = 0; i < size; i++){         //to find the first unoccupied space by iterating through x,y
-            for (int j = 0; j < size; j++){
-                if (board[ycoord][xcoord] == '.'){   //same as before, character is placed  
-                    board[ycoord][xcoord] = v;       //if a blank spot is found
-                    placed = true;                   //boolean updated
-                    if (checkFour(ycoord, xcoord) == 1){    //and score incremented if square is completed
-                        (*players[playerIndex]).score++;
-                        printBoard();
-                        cout << "Score +1 for Player " << (*players[turn]).name << endl << endl;
-                        printPlayers();
-                        return true;    //true returned for complete square
-                    }
-                    else{   //no square made
-                        turn++;
-                        if (turn == numPlayers){
-                            turn = 0;
-                        }
-                        printBoard();
-                        return false;   //false returned for no complete square
-                    }
-                }
+    for (int i = 0; i<size; i++){
+        for (int j = 0; j<size; j++){
+            if (board[i][j] == '.'){
+                listsize++;
             }
         }
     }
-    return false; // no moves found; this shouldn't be reached if we keep good count in playGame()
-
+    movesList::makeList(listsize);
+    //int cellcount = 0; numMoves
+    for (int i = 0; i<size; i++){
+        for (int j = 0; j<size; j++){
+            if (board[i][j] == '.'){
+                movesList[numMoves] = cell(j,i);
+                numMoves++;
+            }
+        }
+    }
+    int priority = 0;
+    for (int = 0; i < cellcount; i++){
+        if checkThree(movesList[i].x,movesList)
+    }
+    cell goodcell = NULL;
 }//findMoves
 
 bool Game::checkFour(int y, int x) {
@@ -484,7 +439,7 @@ void Game::getWinner() {
 }//getWinner
 
 
-bool Game::checkThree(int x, int y) {
+bool Game::checkThree(int y, int x) {
 // Only needed for Extra Credit
 // This method determines whether placing a piece on the board at x and y will complete 3/4 of a square, if so, it
 // returns true.  Otherwise it returns false.
