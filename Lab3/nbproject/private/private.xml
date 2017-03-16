@@ -7,13 +7,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Toby/Dropbox/CISC220/Labs/zLab3/Lab3/movesList.hpp</file>
-            <file>file:/C:/Users/Toby/Dropbox/CISC220/Labs/zLab3/Lab3/Player.hpp</file>
-            <file>file:/C:/Users/Toby/Dropbox/CISC220/Labs/zLab3/Lab3/Game.hpp</file>
-            <file>file:/C:/Users/Toby/Dropbox/CISC220/Labs/zLab3/Lab3/cell.hpp</file>
-            <file>file:/C:/Users/Toby/Dropbox/CISC220/Labs/zLab3/Lab3/Game.cpp</file>
-            <file>file:/C:/Users/Toby/Dropbox/CISC220/Labs/zLab3/Lab3/Player.cpp</file>
-            <file>file:/C:/Users/Toby/Dropbox/CISC220/Labs/zLab3/Lab3/main.cpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/Player.hpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/Game.hpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/movesList.hpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/cell.cpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/cell.hpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/Player.cpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/main.cpp</file>
+            <file>file:/C:/Users/Tobias/Dropbox/CISC220/Labs/zLab3/Lab3/Game.cpp</file>
         </group>
     </open-files>
 </project-private>
