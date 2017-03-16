@@ -406,7 +406,132 @@ void Game::getWinner() {
 
 bool Game::checkThree(int x, int y) {
 // Only needed for Extra Credit
-// This method determines whether placing a piece on the board at x and y will complete - of a square and, if so, it
+// This method determines whether placing a piece on the board at x and y will complete 3/4 of a square, if so, it
 // returns true.  Otherwise it returns false.
-}//checkThree
-
+    string potChars = "";   //will be used list of characters in use by players
+    string compChars[] = {"a","b","c","d","e"}; //computer character array
+    int adjcount = 0;
+    for (int i = 0; i < compplayers; i++){  //for all computer characters in play
+        potChars += (compChars[i]);         //we add these characters to potential characters on the board
+    }
+    for (int i = compplayers; i < numPlayers; i++){ //for all human characters playing
+        potChars += (*players[i]).c;    //their respective characters are also added to the potential board characters
+    }
+    if (x == 0){    //left side
+        if (y == 0){   //coordinates are at the top left corner
+            if (potChars.find(board[y+1][x+1]) != std::string::npos){
+                adjcount++;
+            }
+            if (potChars.find(board[y+1][x]) != std::string::npos) {
+                adjcount++;
+            }
+            if (potChars.find(board[y][x+1]) != std::string::npos){
+                adjcount++;
+            }
+            if (adjcount == 2){
+                return true;
+            }
+            else{
+                return false;
+            }  
+        }
+        else if (y == size-1){    //bottom left corner
+            if (potChars.find(board[y][x+1]) != std::string::npos){
+                adjcount++;
+            }
+            if (potChars.find(board[y-1][x]) != std::string::npos){
+                adjcount++;
+            }
+            if (potChars.find(board[y-1][x+1]) != std::string::npos){
+                adjcount++;
+            }
+            if (adjcount == 2){
+                return true;
+            }
+            else{
+                return false;
+            }  
+        }
+        else{   //left edge cases
+            //cout << "le" << endl;
+            if (((potChars.find(board[y][x+1]) != std::string::npos) && (potChars.find(board[y-1][x])) != std::string::npos) || ((potChars.find(board[y-1][x+1]) != std::string::npos)) && ((potChars.find(board[y-1][x]) != std::string::npos)) || ((potChars.find(board[y-1][x+1]) != std::string::npos) && (potChars.find(board[y][x+1]) != std::string::npos)) || ((potChars.find(board[y][x+1]) != std::string::npos) && (potChars.find(board[y+1][x])) != std::string::npos) || ((potChars.find(board[y+1][x+1]) != std::string::npos)) && ((potChars.find(board[y+1][x]) != std::string::npos)) || ((potChars.find(board[y+1][x+1]) != std::string::npos) && (potChars.find(board[y][x+1]) != std::string::npos))){
+                return true;    //true is returned in the case that adjacent cells are occupied; in the edge case two possibilities are considered rather than one
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    else if (x == size-1){  //right side
+        if (y == 0){   //top right corner
+            if (potChars.find(board[y+1][x-1]) != std::string::npos){
+                adjcount++;
+            }
+            if (potChars.find(board[y+1][x]) != std::string::npos) {
+                adjcount++;
+            }
+            if (potChars.find(board[y][x-1]) != std::string::npos){
+                adjcount++;
+            }
+            if (adjcount == 2){
+                return true;
+            }
+            else{
+                return false;
+            }  
+        }
+        else if (y == size-1){    //bottom right corner
+            if (potChars.find(board[y][x-1]) != std::string::npos){
+                adjcount++;
+            }
+            if (potChars.find(board[y-1][x]) != std::string::npos){
+                adjcount++;
+            }
+            if (potChars.find(board[y-1][x-1]) != std::string::npos){
+                adjcount++;
+            }
+            if (adjcount == 2){
+                return true;
+            }
+            else{
+                return false;
+            }  
+        }
+        else{   //right edge cases
+            //cout << "re" << endl;
+            if (((potChars.find(board[y][x-1]) != std::string::npos) && (potChars.find(board[y-1][x])) != std::string::npos) || ((potChars.find(board[y-1][x-1]) != std::string::npos)) && ((potChars.find(board[y-1][x]) != std::string::npos)) || ((potChars.find(board[y-1][x-1]) != std::string::npos) && (potChars.find(board[y][x-1]) != std::string::npos)) || ((potChars.find(board[y][x-1]) != std::string::npos) && (potChars.find(board[y+1][x])) != std::string::npos) || ((potChars.find(board[y+1][x-1]) != std::string::npos)) && ((potChars.find(board[y+1][x]) != std::string::npos)) || ((potChars.find(board[y+1][x-1]) != std::string::npos) && (potChars.find(board[y][x-1]) != std::string::npos))){
+                return true;    //true is returned in the case that adjacent cells are occupied; in the edge case two possibilities are considered rather than one
+            }
+            else{
+                return false;
+            }
+        }
+    }
+    else if (y == 0){   //top edge cases
+        if (((potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x+1])) != std::string::npos) || ((potChars.find(board[y][x+1]) != std::string::npos)) && ((potChars.find(board[y+1][x+1]) != std::string::npos)) || ((potChars.find(board[y+1][x+1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos)) || ((potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x-1])) != std::string::npos) || ((potChars.find(board[y+1][x-1]) != std::string::npos)) && ((potChars.find(board[y][x-1]) != std::string::npos)) || ((potChars.find(board[y+1][x-1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos))){
+                return true;    //true is returned in the case that adjacent cells are occupied; in the edge case two possibilities are considered rather than one
+            }
+            else{
+                return false;
+            }
+        }
+    else if (y == size-1){   //bottom edge cases
+        if (((potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y][x-1])) != std::string::npos) || ((potChars.find(board[y][x-1]) != std::string::npos)) && ((potChars.find(board[y-1][x-1]) != std::string::npos)) || ((potChars.find(board[y-1][x-1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos)) || ((potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y][x+1])) != std::string::npos) || ((potChars.find(board[y-1][x+1]) != std::string::npos)) && ((potChars.find(board[y][x+1]) != std::string::npos)) || ((potChars.find(board[y-1][x+1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos))){
+                return true;    //true is returned in the case that adjacent cells are occupied; in the edge case two possibilities are considered rather than one
+            }
+            else{
+                return false;
+            }
+        }
+    else{   //general body cases -- all cases that are not edge or corner are considered to return true in the case that a square is completed at given coordinates
+        if (((potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y][x-1])) != std::string::npos) || ((potChars.find(board[y][x-1]) != std::string::npos)) && ((potChars.find(board[y-1][x-1]) != std::string::npos)) || ((potChars.find(board[y-1][x-1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos)) || ((potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y][x+1])) != std::string::npos) || ((potChars.find(board[y-1][x+1]) != std::string::npos)) && ((potChars.find(board[y][x+1]) != std::string::npos)) || ((potChars.find(board[y-1][x+1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos) || (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x+1])) != std::string::npos) || ((potChars.find(board[y][x+1]) != std::string::npos)) && ((potChars.find(board[y+1][x+1]) != std::string::npos)) || ((potChars.find(board[y+1][x+1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos)) || ((potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x-1])) != std::string::npos) || ((potChars.find(board[y+1][x-1]) != std::string::npos)) && ((potChars.find(board[y][x-1]) != std::string::npos)) || ((potChars.find(board[y+1][x-1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos))){             
+                return true;    //true is returned in the case that adjacent cells are occupied; in the edge case two possibilities are considered rather than one
+            }
+            else{
+                return false;
+            }
+        }
+    return false; //should never actually get here, all cases considered.
+// Again, this method checks to see if placing a piece at x and y on the board will complete a square, and, if so, it
+// returns true.  Otherwise it returns false.
+}//checkFour
