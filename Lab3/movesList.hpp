@@ -16,9 +16,7 @@ class movesList {
     // simplicity's sake, in the Game's findMoves() method, this will still be initialized to the board's 
     // size x size length.  That means that the numMoves field (below) will hold the actual number of potential
     // moves in the potentialMoves array (and there will be spaces at teh end of the array that are unused).
-    
     // one more point: This is a clear example of a list that would be MUCH BETTER as a linked list
-    
     int numMoves;  // the number of potential moves
 public:
     movesList();  // constructor, initializes potentialMoves to NULL and numMoves to 0;
