@@ -12,15 +12,16 @@
 using namespace std;
 
 LL::LL() {
+//this is the constructor
 first = NULL;
 last = NULL;
 currsize = 0;
 }//LL
 
-void LL::push( int x) {
-// this function creates a new Node, then adds the node to the end of the list and updates //the last pointer.
-//Note: you�fll want to check to see if this is the very first node being added to the list, //in which case you�fll want to
-//create the new node, and then make sure that both the first //and the last pointer point to it.
+void LL::push(int x) {
+//This function takes an integer as a parameter and creates a new Node that holds that integer.
+//The function then adds the node to the end of the list and updates the first and/or last pointers as needed.
+//The size of the list is then increased by one.
 	Node *node = new Node(x);
 	if(first == NULL){
 		first = node;
@@ -35,11 +36,9 @@ void LL::push( int x) {
 }//push
 
 void LL::removekth(int i) {
-// this method starts at the first node in the list and counts to i-1. It then deletes the //node at location i. Note that
-//you must make node at i-1 point to node at i+1, and you //must decrease the size of the list. If you are deleting the
-//0th element, you must first //set first to the node at 2 before deleting node 1. Equally, if you are deleting the last
-//node, you must make the new last node be the node at i-1.
-//You must delete your node at i.
+//This function takes an integer i as an input parameter and deletes the node at that index from the linked list.
+//Also, it points the previous node to the node after the deleted one, if it exists.  It then decreases
+//the size of the list by one.
 	if(currsize == 0){
 		cout << "List is already empty" << endl;
 		return;
@@ -78,7 +77,7 @@ void LL::removekth(int i) {
 }//removekth
 
 void LL::printList(){
-// Make sure you can write a method that prints out every node in the linked list
+//Prints out every node in the linked list
 	Node *node = first;
 	while(node){
 	  node->printNode();
@@ -86,4 +85,3 @@ void LL::printList(){
 	}//while
 	cout << endl;
 }//printList
-
