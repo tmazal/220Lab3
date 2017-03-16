@@ -70,7 +70,7 @@ void Game::printBoard() {
         for (int j = 0; j < size; j++) {
             cout << board[i][j]<<"\t";
         }
-        cout << endl << endl;
+        cout << endl << endl;   //added another print line for better spacing
     }
 }//printBoard
 
@@ -107,83 +107,83 @@ void Game::printPlayers() {
 }//printPlayers
 
 void Game::playGame() {
-// This is the heart of the game.  I called this method directly from my Game constructor(s) as the very last thing.
-//This method loops until the board is full.  
+// This is the heart of the game.  This method is called directly from the Game constructor(s) as the very last thing.
+// This method loops until the board is full.  
 // In each loop, the next player either chooses where to place their character (if human) or the x,y coordinates are 
 // randomly generated (and checked to make sure the player isn't overwriting a piece already on the board).
-//It checks to see if the new piece completes a square, and, if so, that player's score goes up by 1 and that player
+// If extra credit is operational, the AI will make smart decisions about where to place their pieces.
+//The function checks to see if the new piece completes a square, and, if so, that player's score goes up by 1 and that player
 // takes another turn.  At the end of each round, the board is printed out and each player's name and score is printed.
-    int loop = 0;
-    int xco = -1;
+//The chance to play another game is also offered.
+    int loop = 0;   //number of loop iterations initialized to 0
+    int xco = -1;   //coordinates initialized to -1
     int yco = -1;
-    int end;
-    bool loopcond = true;       //continues placing
-    bool firstplace = true;     //first placement condition 
-    int playagain;
-    while (loop < size*size){
-        if ((*players[turn]).isComputer == true){
-            while (loopcond == true){
-                if (findMoves((*players[turn]).c) == true){
-                    loop++;
-                    if (loop == size*size){
-                        loopcond = false;
+    bool loopcond = true;       //boolean condition for continued placing
+    bool firstplace = true;     //first placement condition for human players
+    int playagain;  //int used to determine whether we want to keep playing
+    while (loop < size*size){   //as long as we have not looped more than the number of available spaces...
+        if ((*players[turn]).isComputer == true){   //if it is the computer's turn
+            while (loopcond == true){   //as long as they are allowed to keep placing
+                if (findMoves((*players[turn]).c) == true){ //if computer played coordinates complete a square
+                    loop++; //the loop count is incremented
+                    if (loop == size*size){ //a check is done for whether we are out of moves
+                        loopcond = false;   //in the case that the inner while loop and then outer while loop stop iterating
                     }
                 }
-                else{  //turn incremented in findmoves already
-                    loop++;
-                    loopcond = false;
-                    printPlayers();
+                else{  //computer played coordinates do not complete a square
+                    loop++; //loop counter incremented
+                    loopcond = false;   //stop looping (inner while)
+                    printPlayers();     //players printed; Note: turn incremented when findMoves is called
                 }       
             }
         }
-        else{
-            while (loopcond == true){
-                while (firstplace == true || xco >= size || yco >= size || board[yco][xco] != '.' ){
+        else{   //if it is the player's turn
+            while (loopcond == true){   //as long as they are allowed to start/continue placing
+                while (firstplace == true || xco >= size || yco >= size || xco < 0 || yco < 0 || board[yco][xco] != '.' ){    //as long as they start placing or do not choose an appropriate placement; we ask for input coordinates
                     cout << (*players[turn]).name << ", please choose x and y coordinates to play your piece in a new spot. Range is from 0 to " << (size-1) << " inclusive." << endl << "x coord?" << endl;
-                    cin >> xco;
+                    cin >> xco; //x coordinate input
                     cout << "y coord?" << endl;
-                    cin >> yco;
-                    firstplace = false;
+                    cin >> yco; //y coordinate input
+                    firstplace = false; //first placement set to false so the other conditions will be checked instead (size constraints and occupied check)
                 }
-                board[yco][xco] = (*players[turn]).c;
-                if (checkFour(yco, xco) == true){
-                    (*players[turn]).score++;
-                    cout << endl << "Score +1 for Player " << (*players[turn]).name << endl;
-                    printPlayers();
-                    printBoard();
-                    loop++;
-                    if (loop == size*size){
-                        loopcond = false;
+                board[yco][xco] = (*players[turn]).c;   //when appropriate placement found, the board is updated
+                if (checkFour(yco, xco) == true){   //if player coordinates complete a square
+                    (*players[turn]).score++;       //their score is incremented
+                    cout << endl << "Score +1 for Player " << (*players[turn]).name << endl;    //score + 1 printed
+                    printBoard();   //board printed
+                    printPlayers(); //players printed
+                    loop++;         //loop incremented
+                    if (loop == size*size){ //check whether we are out of moves in the board
+                        loopcond = false;   //if so, stop looping (inner and then outer while loop stop)
                     }
                 }
-                else{
-                    turn++;
-                    if (turn == numPlayers){
+                else{   //if player does not complete the square
+                    turn++; //turn is incremented
+                    if (turn == numPlayers){    //if all players have played their turn, rotation resets
                         turn = 0;
                     }
-                    loop++;
-                    loopcond = false;
-                    printBoard();
-                    printPlayers();
+                    loop++; //loop counter incremented
+                    loopcond = false;   //loop condition updated so inner while loop ends
+                    printBoard();   //board printed
+                    printPlayers(); //players printed
                 }
-                
             }
         }
-        loopcond = true;
+        loopcond = true;    //inter while loop condition set to true so we can enter while loop after out loop iterates
     }
-    getWinner();
-    
-    cout << "Want to play again? Type '1' for regular version or '2' to view an epic AI game" << endl;
+    getWinner();    //after all moves played; winner is found!
+    //Player is asked whether they want to play again; calling appropriate constructor for the type of the game that will be played
+    cout << "Want to play again? Type '1' for regular version or '2' to view an epic AI game. '0' to quit." << endl;
     cin >> playagain;
-    if (playagain == 1){
+    if (playagain == 1){    //regular game started
         cout << endl;
         Game game;  //starts a new game (non-AI version)
     }
-    if (playagain == 2){
+    if (playagain == 2){    //AI game started; useful for testing
         cout << endl;
         Game(1);
     }
-    boardFull = true;
+    boardFull = true;   //boolean updated; not used within this code really
 //Note: for the extra credit version, the findMoves method returns a dynamically created array of 3 different moveLists. 
 // The first of the 3  contains the list of moves that would complete a square. The second of the 3 contains a list of 
 // neutral moves, and the third of the 3 contains the list of moves that place a third corner on a square (which are bad 
@@ -198,66 +198,67 @@ bool Game::findMoves(char v){
 //    board is empty, then places the player's character v on the board, and checks to see if a 
 //    square is completed using checkFour.  If so, true is returned and that player's score goes up by 1 in the
 //    playGame method, and that player gets to take another turn (so turn does not increase by 1).  
-    int playerIndex;
-    bool placed = false;
+//    As mentioned, this function takes in a character and returns 1 if a square is complete at a random x,y value.
+    int playerIndex;    //int that will hold the index of the player with character v
+    bool placed = false;    //boolean represents whether a char is placed
     //finds index of player playing by character
-    for (int i = 0; i < numPlayers; i++){
-        if ((*players[i]).c == v){
-            playerIndex = i;
+    for (int i = 0; i < numPlayers; i++){   //iterate through players
+        if ((*players[i]).c == v){          //until we find who the character belongs to
+            playerIndex = i;                //and set playerindex
         }
     }
-    int xcoord = rand()%size;
+    int xcoord = rand()%size;               //random x,y coords generated from 0 to size exclusive
     int ycoord = rand()%size;
-    for (int i = 0; i < 100; i++){
-        if (board[ycoord][xcoord] == '.'){
-            board[ycoord][xcoord] = v;
+    for (int i = 0; i < 100; i++){          //for loop has 100 tries to find an unoccupied spot on the board
+        if (board[ycoord][xcoord] == '.'){  //if spot unoccupied
+            board[ycoord][xcoord] = v;      //we place character these
             placed = true;
-            if (checkFour(ycoord, xcoord) == 1){
-                (*players[playerIndex]).score++;
-                printBoard();                
-                cout << "Score +1 for Player " << (*players[turn]).name << endl << endl;
-                printPlayers();
-                return true;
+            if (checkFour(ycoord, xcoord) == 1){    //and check if a square is completed
+                (*players[playerIndex]).score++;    //if so, score increases
+                printBoard();                       //board is printed
+                cout << "Score +1 for Player " << (*players[turn]).name << endl << endl;    //score +1 printed
+                printPlayers();                     //players printed
+                return true;    //true returned, square made
             }
-            else{
-                turn++;
-                if (turn == numPlayers){
-                    turn = 0;
+            else{           //if a character is placed but the square is not completed
+                turn++;     //turn is incremented
+                if (turn == numPlayers){    //loop loops back to start of rotation if everyone has played their turn
+                    turn = 0;               //by setting turn to 0
                 }
-                printBoard();
-                return false;
+                printBoard();               //board is printed
+                return false;   //false returned, no square made
             }
         }
-    xcoord = rand()%size;
+    xcoord = rand()%size;   //x,y coordinates randomized again
     ycoord = rand()%size;
     }
-    //100 tries to randomly generate values and place on an empty space
+    //this point is reached if no x,y coordinates for unoccupied spaces are found within 100 attempts
     if (placed == false){   //if no empty spaces found we iterate through entire board sequentially
-        for (int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++){         //to find the first unoccupied space by iterating through x,y
             for (int j = 0; j < size; j++){
-                if (board[ycoord][xcoord] == '.'){
-                    board[ycoord][xcoord] = v;
-                    placed = true;
-                    if (checkFour(ycoord, xcoord) == 1){
+                if (board[ycoord][xcoord] == '.'){   //same as before, character is placed  
+                    board[ycoord][xcoord] = v;       //if a blank spot is found
+                    placed = true;                   //boolean updated
+                    if (checkFour(ycoord, xcoord) == 1){    //and score incremented if square is completed
                         (*players[playerIndex]).score++;
                         printBoard();
                         cout << "Score +1 for Player " << (*players[turn]).name << endl << endl;
                         printPlayers();
-                        return true;
+                        return true;    //true returned for complete square
                     }
-                    else{
+                    else{   //no square made
                         turn++;
                         if (turn == numPlayers){
                             turn = 0;
                         }
                         printBoard();
-                        return false;
+                        return false;   //false returned for no complete square
                     }
                 }
             }
         }
     }
-    return false; // no moves found
+    return false; // no moves found; this shouldn't be reached if we keep good count in playGame()
 // movesList * Game::findMoves(char v) {
 // The extra credit version of this method - this method dynamically creates a list of 3 movesList objects.  It then goes
 // through the entire board and classifies each possible move left on the board as being either good (will complete a 
@@ -270,19 +271,29 @@ bool Game::findMoves(char v){
 }//findMoves
 
 bool Game::checkFour(int y, int x) {
-    string potChars = "";   //make list of characters in use
-    string compChars[] = {"a","b","c","d","e"};
-    for (int i = 0; i < compplayers; i++){
-        potChars += (compChars[i]);
+    //This method checks to see if adding the character v to the cell x,y in the board will complete a square, and, if
+    // so, returns true 
+    //In the regular, this will result in the score of player[turn] going up by one and player[turn]'s character being 
+    //added to the board at x,y
+    //In the Extra Credit, (this will lead to findMoves adding this cell to the MovesList object (e.g., 
+    //allMovesls[0].potentialMoves[allMovesls.numMoves].resetCell(x,y,v);
+    //y and x coordinates are taking as input; boolean is returned corresponding to whether a square is made at those coordinates
+    string potChars = "";   //will be used list of characters in use by players
+    string compChars[] = {"a","b","c","d","e"}; //computer character array
+    for (int i = 0; i < compplayers; i++){  //for all computer characters in play
+        potChars += (compChars[i]);         //we add these characters to potential characters on the board
     }
-    for (int i = compplayers; i < numPlayers; i++){
-        potChars += (*players[i]).c;
+    for (int i = compplayers; i < numPlayers; i++){ //for all human characters playing
+        potChars += (*players[i]).c;    //their respective characters are also added to the potential board characters
     }
-    //checks 8 specific case (4 edges and 4 corners) to prevent indexing out of range of the board and then general cases
-    if (x == 0){
-        if (y == 0){   //top left corner
-            if ((potChars.find(board[y+1][x+1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x+1]) != std::string::npos)){
-                return true;    
+    //The way I coded checkfour essentially checked if 3 adjacent dots were occupied. This worked by checking the character at those cells; if they matched
+    //the characters in potential characters then we know that they are occupied.
+    //I first checked 8 specific case (4 edges and 4 corners) and then general cases to prevent indexing out of range
+    //I commented the first few cases
+    if (x == 0){    //left side
+        if (y == 0){   //coordinates are at the top left corner
+            if ((potChars.find(board[y+1][x+1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x+1]) != std::string::npos)){   //if all adjacent characters are found to belong to players (meaning they are occupied)
+                return true;   //true is returned in the case that (0,1), (1,0), (0,0) are occupied 
             }
             else{
                 return false;
@@ -291,23 +302,23 @@ bool Game::checkFour(int y, int x) {
         else if (y == size-1){    //bottom left corner
             //cout << "bl" << endl;
             if ((potChars.find(board[y][x+1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y-1][x+1]) != std::string::npos)){
-                return true;    
+                return true;    //true is returned in the case that adjacent cells are occupied
             }
             else{
                 return false;
             }
         }
-        else{   //left edge case
+        else{   //left edge cases
             //cout << "le" << endl;
             if (((potChars.find(board[y+1][x+1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x+1]) != std::string::npos)) || ((potChars.find(board[y-1][x+1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y][x+1]) != std::string::npos))){
-                return true;
+                return true;    //true is returned in the case that adjacent cells are occupied; in the edge case two possibilities are considered rather than one
             }
             else{
                 return false;
             }
         }
     }
-    else if (x == size-1){
+    else if (x == size-1){  //right side
         if (y == 0){   //top right corner
             //cout << "tr" << endl;
             if ((potChars.find(board[y+1][x-1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x-1]) != std::string::npos)){
@@ -326,7 +337,7 @@ bool Game::checkFour(int y, int x) {
                 return false;
             }
         }
-        else{   //right edge case
+        else{   //right edge cases
             //cout << "re" << endl;
             if (((potChars.find(board[y+1][x-1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x-1]) != std::string::npos)) || ((potChars.find(board[y-1][x-1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y][x-1]) != std::string::npos))){
                 return true;
@@ -336,7 +347,7 @@ bool Game::checkFour(int y, int x) {
             }
         }
     }
-    else if (y == 0){   //top edge
+    else if (y == 0){   //top edge cases
         if (((potChars.find(board[y+1][x-1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x-1]) != std::string::npos)) || ((potChars.find(board[y+1][x+1]) != std::string::npos) && (potChars.find(board[y+1][x]) != std::string::npos) && (potChars.find(board[y][x+1]) != std::string::npos))){
             return true;
         }
@@ -344,7 +355,7 @@ bool Game::checkFour(int y, int x) {
             return false;
         }
     }
-    else if (y == size-1){   //bottom edge
+    else if (y == size-1){   //bottom edge cases
         if (((potChars.find(board[y][x-1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y-1][x-1]) != std::string::npos)) || ((potChars.find(board[y][x+1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y-1][x+1]) != std::string::npos))){
             return true;
         }
@@ -352,7 +363,7 @@ bool Game::checkFour(int y, int x) {
             return false;
         }
     }
-    else{   //general body cases
+    else{   //general body cases -- all cases that are not edge or corner are considered to return true in the case that a square is completed at given coordinates
         if ((potChars.find(board[y-1][x-1]) != std::string::npos) && (potChars.find(board[y-1][x]) != std::string::npos) && (potChars.find(board[y][x-1]) != std::string::npos)){
             return true;
         }
@@ -370,26 +381,26 @@ bool Game::checkFour(int y, int x) {
         }
     }
     return false; //should never actually get here, all cases considered.
-// this method checks to see if placing a piece at x and y on the board will complete a square, and, if so, it
+// Again, this method checks to see if placing a piece at x and y on the board will complete a square, and, if so, it
 // returns true.  Otherwise it returns false.
 }//checkFour
 
 void Game::getWinner() {
-    int highestScore = -1;
-    int indexOfWinner;
-    for(int i = 0; i < numPlayers; i++){
-	if((*players[i]).score > highestScore){
-            highestScore = (*players[i]).score;
+// This method determines which of the players in the array of Players has the highest score, and prints out 
+// that player's name and their score. If multiple players have the highest score, they are all winners!
+//Nothing is input and nothing is returned.
+    int highestScore = -1;  //initialize highest score to -1
+    for(int i = 0; i < numPlayers; i++){        //iterate through all players to find the highest score
+	if((*players[i]).score > highestScore){ 
+            highestScore = (*players[i]).score; //highest score found
 	}//if
     }//for
-    for(int i = 0; i < numPlayers; i++){
-        if ((*players[i]).score == highestScore){ 
-            cout << "Winner: " << (*players[i]).name << "!" << " Score: " << (*players[i]).score << endl;
+    for(int i = 0; i < numPlayers; i++){            //iterate through all players to find which of them has the highest score
+        if ((*players[i]).score == highestScore){   //if they have the highest score..
+            cout << "Winner: " << (*players[i]).name << "!" << " Score: " << (*players[i]).score << endl;   //they are announced to be winners!
         }
     }
-    //multiple players printed in the case of a tie
-// This method determines which of the players in the array of Players has the highest score, and prints out 
-// that player's name and their score.
+    //multiple players printed in the case of a tie!
 }//getWinner
 
 

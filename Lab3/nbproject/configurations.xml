@@ -5,13 +5,13 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Game.hpp</itemPath>
+      <itemPath>Player.hpp</itemPath>
       <itemPath>cell.hpp</itemPath>
       <itemPath>movesList.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
-      <itemPath>Player.hpp</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
