@@ -1,25 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   main.cpp
- * Author: Tobias
- *
- * Created on March 16, 2017, 3:36 PM
- */
-
-#include <cstdlib>
-
+#include <iostream>
+#include <stdlib.h>
+#include "Node.hpp"
+#include "LL.hpp"
 using namespace std;
 
-/*
- * 
- */
-int main(int argc, char** argv) {
-
-    return 0;
-}
-
+int main(){
+  LL *LL1 = new LL();
+  LL1->push(1);
+  LL1->push(2);
+  LL1->push(3);
+  LL1->push(4);
+  LL1->push(5);
+  LL1->printList();
+  LL1->removekth(4);
+  LL1->removekth(0);
+  LL1->removekth(2);
+  LL1->removekth(0);
+  LL1->printList();
+}//end main
