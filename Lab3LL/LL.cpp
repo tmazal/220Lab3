@@ -23,7 +23,7 @@ void LL::push(int x) {
 //The function then adds the node to the end of the list and updates the first and/or last pointers as needed.
 //The size of the list is then increased by one. Nothing is returned.
 	Node *node = new Node(x);
-	if(first == NULL){
+	if(first == NULL){//if there are no nodes in the list, the new node becomes the first and last of that list
 		first = node;
 		last = node;
 		currsize = 1;
