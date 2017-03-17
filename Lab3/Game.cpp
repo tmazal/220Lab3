@@ -122,9 +122,12 @@ void Game::playGame() {
     bool loopcond = true;       //boolean condition for continued placing
     bool firstplace = true;     //first placement condition for human players
     int playagain;  //int used to determine whether we want to keep playing
+    movesList* moveslists = NULL;
+    int randomchoice;
     while (loop < size*size){   //as long as we have not looped more than the number of available spaces...
         if ((*players[turn]).isComputer == true){   //if it is the computer's turn
             while (loopcond == true){   //as long as they are allowed to keep placing
+                /*The following codes works when not employing the AI from the extra credit version! (fully functional)
                 if (findMoves((*players[turn]).c) == true){ //if computer played coordinates complete a square
                     loop++; //the loop count is incremented
                     if (loop == size*size){ //a check is done for whether we are out of moves
@@ -135,7 +138,52 @@ void Game::playGame() {
                     loop++; //loop counter incremented
                     loopcond = false;   //stop looping (inner while)
                     printPlayers();     //players printed; Note: turn incremented when findMoves is called
-                }       
+                }      
+                 */
+                moveslists = findMoves((*players[turn]).c);
+                cout << "Good Moves" << endl;
+                for (int i = 0; i < moveslists[0].numMoves; i++){
+                    cout << "x: " << moveslists[0].potentialMoves[i].x << endl;
+                    cout << "y: " << moveslists[0].potentialMoves[i].y << endl;
+                }
+                cout << "Neutral Moves" << endl;
+                for (int i = 0; i < moveslists[1].numMoves; i++){
+                    cout << "x: " << moveslists[1].potentialMoves[i].x << endl;
+                    cout << "y: " << moveslists[1].potentialMoves[i].y << endl;
+                }
+                cout << "Bad Moves" << endl;
+                for (int i = 0; i < moveslists[2].numMoves; i++){
+                    cout << "x: " << moveslists[2].potentialMoves[i].x << endl;
+                    cout << "y: " << moveslists[2].potentialMoves[i].y << endl;
+                }
+                if (moveslists[0].numMoves > 0){
+                    randomchoice = rand()%moveslists[0].numMoves;
+                    board[moveslists[0].potentialMoves[randomchoice].y][moveslists[0].potentialMoves[randomchoice].x] = (*players[turn]).c;
+                    (*players[turn]).score++;    //if so, score increases
+                    printBoard();                       //board is printed
+                    cout << "Score +1 for Player " << (*players[turn]).name << endl << endl;    //score +1 printed
+                    printPlayers();
+                    loop++; //the loop count is incremented
+                    if (loop == size*size){ //a check is done for whether we are out of moves
+                        loopcond = false;   //in the case that the inner while loop and then outer while loop stop iterating
+                    }
+                }
+                else if (moveslists[1].numMoves>0){
+                    randomchoice = rand()%moveslists[1].numMoves;
+                    board[moveslists[1].potentialMoves[randomchoice].y][moveslists[1].potentialMoves[randomchoice].x] = (*players[turn]).c;
+                    printBoard();
+                    printPlayers();
+                    loop++;
+                    loopcond = false;
+                }
+                else {
+                    randomchoice = rand()%moveslists[2].numMoves;
+                    board[moveslists[2].potentialMoves[randomchoice].y][moveslists[2].potentialMoves[randomchoice].x] = (*players[turn]).c;
+                    printBoard();
+                    printPlayers();
+                    loop++;
+                    loopcond = false;
+                }
             }
         }
         else{   //if it is the player's turn
@@ -196,7 +244,7 @@ void Game::playGame() {
 
 /*
 bool Game::findMoves(char v){
-//    Regular version, this method continues to generate random x,y values until that cell on the
+//    Regular version (fully functional), this method continues to generate random x,y values until that cell on the
 //    board is empty, then places the player's character v on the board, and checks to see if a 
 //    square is completed using checkFour.  If so, true is returned and that player's score goes up by 1 in the
 //    playGame method, and that player gets to take another turn (so turn does not increase by 1).  
@@ -273,9 +321,15 @@ bool Game::findMoves(char v){
 }//findMoves
 */
 
-cell Game::findMoves(char v){
+movesList *Game::findMoves(char v){
     int playerIndex;    //int that will hold the index of the player with character v
-    int listsize = 0;   //initial size of list of cells
+    int listsize0 = 0;  
+    int listsize1 = 0;
+    int listsize2 = 0;
+    cell* cellarray0 = NULL;
+    cell* cellarray1 = NULL;
+    cell* cellarray2 = NULL;
+    int totalmoves = 0;
     for (int i = 0; i < numPlayers; i++){   //iterate through players
         if ((*players[i]).c == v){          //until we find who the character belongs to
             playerIndex = i;                //and set playerindex
@@ -284,25 +338,53 @@ cell Game::findMoves(char v){
     for (int i = 0; i<size; i++){
         for (int j = 0; j<size; j++){
             if (board[i][j] == '.'){
-                listsize++;
+                totalmoves++;
+                if (checkFour(i,j)){
+                    listsize0++;
+                }
+                else if (checkThree(i,j)){
+                    listsize2++;
+                }
+                else {
+                    listsize1++;
+                }
             }
         }
     }
-    movesList::makeList(listsize);
-    //int cellcount = 0; numMoves
+    movesList* moveslistarray = NULL; //array of players initialized to null
+    moveslistarray = new movesList[3];   //dynamically generated an array of pointers to Players
+    cellarray0 = new cell[listsize0];
+    cellarray1 = new cell[listsize1];
+    cellarray2 = new cell[listsize2];
+    int k0 = 0;
+    int k1 = 0;
+    int k2 = 0;
     for (int i = 0; i<size; i++){
         for (int j = 0; j<size; j++){
             if (board[i][j] == '.'){
-                movesList[numMoves] = cell(j,i);
-                numMoves++;
+                totalmoves++;
+                if (checkFour(i,j)){
+                    moveslistarray[0].potentialMoves[k0] = cell(j,i);
+                    k0++;
+                }
+                else if (checkThree(i,j)){
+                    moveslistarray[2].potentialMoves[k2] = cell(j,i);
+                    k2++;
+                }
+                else {
+                    moveslistarray[1].potentialMoves[k1] = cell(j,i);
+                    k1++;
+                }
             }
         }
     }
-    int priority = 0;
-    for (int = 0; i < cellcount; i++){
-        if checkThree(movesList[i].x,movesList)
-    }
-    cell goodcell = NULL;
+    moveslistarray[0].numMoves = listsize0;
+    moveslistarray[0].potentialMoves = cellarray0;
+    moveslistarray[1].numMoves = listsize1;
+    moveslistarray[1].potentialMoves = cellarray1;
+    moveslistarray[2].numMoves = listsize2;
+    moveslistarray[2].potentialMoves = cellarray2;
+    return moveslistarray;
 }//findMoves
 
 bool Game::checkFour(int y, int x) {
