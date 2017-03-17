@@ -127,7 +127,7 @@ void Game::playGame() {
     while (loop < size*size){   //as long as we have not looped more than the number of available spaces...
         if ((*players[turn]).isComputer == true){   //if it is the computer's turn
             while (loopcond == true){   //as long as they are allowed to keep placing
-                //The following codes works when not employing the AI from the extra credit version! (fully functional)
+                //The following commented out works when not employing the AI from the extra credit version! (fully functional)
                 /*
                 if (findMoves((*players[turn]).c) == true){ //if computer played coordinates complete a square
                     loop++; //the loop count is incremented
@@ -142,26 +142,26 @@ void Game::playGame() {
                 }
                  */
                 
-                //Extra Credit Portion - submission pending
-                moveslists = findMoves((*players[turn]).c);
-                cout << "Good Moves" << endl;
-                for (int i = 0; i < moveslists[0].numMoves; i++){
+                //Extra Credit Portion - WORKING!
+                moveslists = findMoves((*players[turn]).c); //array of moveslist object created by calling the findmoves function
+                cout << "Good Moves" << endl;   //good, bad, neutral moves printed after being determined by findmoves function
+                for (int i = 0; i < moveslists[0].numMoves; i++){   //iterate through good moves to print their x and y values (square completed)
                     cout << "x: " << moveslists[0].potentialMoves[i].x << endl;
                     cout << "y: " << moveslists[0].potentialMoves[i].y << endl;
                 }
                 cout << "Neutral Moves" << endl;
-                for (int i = 0; i < moveslists[1].numMoves; i++){
+                for (int i = 0; i < moveslists[1].numMoves; i++){   //iterate through neutral moves to print their x and y values (neither good nor bad)
                     cout << "x: " << moveslists[1].potentialMoves[i].x << endl;
                     cout << "y: " << moveslists[1].potentialMoves[i].y << endl;
                 }
                 cout << "Bad Moves" << endl;
-                for (int i = 0; i < moveslists[2].numMoves; i++){
+                for (int i = 0; i < moveslists[2].numMoves; i++){   //iterate through bad moves to print their x and y values (coordinates where opponent can consequently score)
                     cout << "x: " << moveslists[2].potentialMoves[i].x << endl;
                     cout << "y: " << moveslists[2].potentialMoves[i].y << endl;
                 }
-                if (moveslists[0].numMoves > 0){
-                    randomchoice = rand()%moveslists[0].numMoves;
-                    board[moveslists[0].potentialMoves[randomchoice].y][moveslists[0].potentialMoves[randomchoice].x] = (*players[turn]).c;
+                if (moveslists[0].numMoves > 0){    //if there are one or more good moves 
+                    randomchoice = rand()%moveslists[0].numMoves;   //select one at random
+                    board[moveslists[0].potentialMoves[randomchoice].y][moveslists[0].potentialMoves[randomchoice].x] = (*players[turn]).c; //set the board to update with player character
                     (*players[turn]).score++;    //if so, score increases
                     printBoard();                       //board is printed
                     cout << "Score +1 for Player " << (*players[turn]).name << endl << endl;    //score +1 printed
