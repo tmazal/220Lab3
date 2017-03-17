@@ -2,7 +2,7 @@
  * LL.cpp
  *
  *  Created on: Mar 15, 2017
- *      Author: Bryan
+ * Author: Bryan Mejia and Tobias Mazal
  */
 
 #include <iostream>
@@ -21,7 +21,7 @@ currsize = 0;
 void LL::push(int x) {
 //This function takes an integer as a parameter and creates a new Node that holds that integer.
 //The function then adds the node to the end of the list and updates the first and/or last pointers as needed.
-//The size of the list is then increased by one.
+//The size of the list is then increased by one. Nothing is returned.
 	Node *node = new Node(x);
 	if(first == NULL){
 		first = node;
