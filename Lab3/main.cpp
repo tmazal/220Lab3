@@ -21,8 +21,8 @@ using namespace std;
  */
 
 int main(int argc, char** argv) {
-    //Game game;  //non AI initiated
-    Game(1);  //AI game initiated
+    Game game;  //non AI initiated
+    //Game(1);  //AI game initiated
     return 0;
 }
 
