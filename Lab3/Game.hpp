@@ -1,7 +1,7 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 #include "Player.hpp"
-
+#include "movesList.hpp"
 class Game {
     char ** board;  // the gameboard, will be initialized to size x size characters in makeBoard()
     // The board size should be anywhere between 3x3 and 11x11 
@@ -63,14 +63,14 @@ public:
 //    the winner (Note that this method prints out the board after each player's turn, as well as each player's score
 //    so far, so you can watch the game progress).
     
-    bool findMoves(char v);
+    //bool findMoves(char v);
 //    Regular version, this method continues to generate random x,y values until that cell on the
 //    board is empty, then places the player's character v on the board, and checks to see if a 
 //    square is completed using checkFour.  If so, true is returned and that player’s score goes up by 1 in the 
 //    playGame method, and that player gets to take another turn (so turn does not increase by 1).  Otherwise turn 
 //    increases so that it becomes the next player’s turn (turn must loop back to 0 when it gets to be >= numPlayers)  
     
-    //movesList *findMoves(char v);
+    movesList *findMoves(char v);
     //Extra Credit Version of findMoves:
     //This method dynamically creates and returns a list of 3 movesList objects
     // the first movesList is for the moves that have highest priority (would complete

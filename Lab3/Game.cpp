@@ -127,7 +127,8 @@ void Game::playGame() {
     while (loop < size*size){   //as long as we have not looped more than the number of available spaces...
         if ((*players[turn]).isComputer == true){   //if it is the computer's turn
             while (loopcond == true){   //as long as they are allowed to keep placing
-                /*The following codes works when not employing the AI from the extra credit version! (fully functional)
+                //The following codes works when not employing the AI from the extra credit version! (fully functional)
+                /*
                 if (findMoves((*players[turn]).c) == true){ //if computer played coordinates complete a square
                     loop++; //the loop count is incremented
                     if (loop == size*size){ //a check is done for whether we are out of moves
@@ -138,8 +139,11 @@ void Game::playGame() {
                     loop++; //loop counter incremented
                     loopcond = false;   //stop looping (inner while)
                     printPlayers();     //players printed; Note: turn incremented when findMoves is called
-                }      
+                }
                  */
+                
+                //Extra Credit Portion - submission pending
+                cout << "test";
                 moveslists = findMoves((*players[turn]).c);
                 cout << "Good Moves" << endl;
                 for (int i = 0; i < moveslists[0].numMoves; i++){
@@ -184,6 +188,7 @@ void Game::playGame() {
                     loop++;
                     loopcond = false;
                 }
+                 //
             }
         }
         else{   //if it is the player's turn
@@ -321,6 +326,7 @@ bool Game::findMoves(char v){
 }//findMoves
 */
 
+//
 movesList *Game::findMoves(char v){
     int playerIndex;    //int that will hold the index of the player with character v
     int listsize0 = 0;  
@@ -363,11 +369,11 @@ movesList *Game::findMoves(char v){
         for (int j = 0; j<size; j++){
             if (board[i][j] == '.'){
                 totalmoves++;
-                if (checkFour(i,j)){
+                if (checkFour(j,i)){
                     moveslistarray[0].potentialMoves[k0] = cell(j,i);
                     k0++;
                 }
-                else if (checkThree(i,j)){
+                else if (checkThree(j,i)){
                     moveslistarray[2].potentialMoves[k2] = cell(j,i);
                     k2++;
                 }
@@ -386,6 +392,7 @@ movesList *Game::findMoves(char v){
     moveslistarray[2].potentialMoves = cellarray2;
     return moveslistarray;
 }//findMoves
+//
 
 bool Game::checkFour(int y, int x) {
     //This method checks to see if adding the character v to the cell x,y in the board will complete a square, and, if
