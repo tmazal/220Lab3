@@ -1,3 +1,4 @@
+package pkgAnimation;
 import javax.swing.Timer;
 
 /**
@@ -21,8 +22,8 @@ public class Model {
 	private int y = 38; //defined here to give space for the buttons
 	private Direction direction;
 	
-	final private int xChange = 8;
-	final private int yChange = 2;
+	final private int xChange = 6;//8
+	final private int yChange = 6;//2
 	
 	//Used to tell direction
 	//Direction that orc begins moving is !north and east
@@ -149,10 +150,5 @@ public class Model {
 	public Boolean getRunning(){
 		return running;
 	}
-	
-	//public int getXChange() {return xChange;}
-	
-	//public int getYChange() {return yChange;}
-	
 	
 }
