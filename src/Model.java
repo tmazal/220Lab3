@@ -40,7 +40,6 @@ public class Model {
 
 	//Update position of the orc
 	public void updateLocationAndDirection() { 
-		//printTestInfo();
 	
 		/*
 		 *                        North(-y)
@@ -71,7 +70,6 @@ public class Model {
 			//West
 			x = x - xChange;
 		}
-		//direction = getDirect();//Get the direction that the orc is moving
 	}
 	
 	//This is required from the Controller - Gets the direction the orc is moving.(Uses flags to find direction)
