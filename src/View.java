@@ -1,3 +1,5 @@
+package pkgAnimation;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -22,7 +24,6 @@ public class View extends JPanel{
     private BufferedImage[] pics;
     private int xloc = 0;
     private int yloc = 38;
-    //private int counter = 0;
  
     private Direction direction;
     private JFrame frame;
@@ -31,8 +32,7 @@ public class View extends JPanel{
     private JButton reverseButton;
     private Action drawAction;
     private Action reverseAction;	    
-    final int xIncr = 8;//8 
-    final int yIncr = 2;//2 
+
     final static int frameWidth = 500;//500
     final static int frameHeight = 400;//400
     final static int imageWidth = 165;
