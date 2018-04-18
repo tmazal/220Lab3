@@ -11,4 +11,8 @@ public class Run //Starts the animation sequence
 	}
 
 }
+<<<<<<< HEAD
 hi
+=======
+kk
+>>>>>>> branch2
